@@ -1,16 +1,20 @@
+import { useDispatch } from "react-redux";
 import authService from "../appwrite/auth";
+import { removeUser } from "../store/authSlice";
 
 const Posts = () => {
+  const dispatch = useDispatch();
   //
   const logoutSession = async (e) => {
     e.preventDefault();
     await authService.logoutUser();
+    dispatch(removeUser());
   };
 
   const getUserDetails = async (e) => {
     e.preventDefault();
-    const user = await authService.getUserInfo();
-    console.log("userrrr, ", user);
+    // const user = await authService.getUserInfo();
+    // console.log("userrrr, ", user);
   };
 
   return (

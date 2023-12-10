@@ -6,6 +6,10 @@ import "./index.css";
 import { Home, Login, Posts } from "./pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { store } from "./store/store.js";
+import { Provider } from "react-redux";
+import AuthProtectedLayout from "./components/AuthProtectedLayout.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -13,22 +17,34 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: (
+          <AuthProtectedLayout isAuthNeeded={true}>
+            <Home />,
+          </AuthProtectedLayout>
+        ),
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <AuthProtectedLayout isAuthNeeded={false}>
+            <Login />
+          </AuthProtectedLayout>
+        ),
       },
       {
         path: "/posts",
-        element: <Posts />,
+        element: (
+          <AuthProtectedLayout isAuthNeeded={true}>
+            <Posts />,
+          </AuthProtectedLayout>
+        ),
       },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <Provider store={store}>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </Provider>
 );

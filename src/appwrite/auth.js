@@ -17,10 +17,9 @@ export class AuthService {
     try {
       await this.account.createOAuth2Session(
         "google",
-        "http://localhost:5173/posts",
-        "http://localhost:5173/signup"
+        "http://localhost:5173/",
+        "http://localhost:5173/login"
       );
-      //   else null;
     } catch (err) {
       console.log("login failed in createSessionGoogle-auth.js, ", err);
       throw Error;
@@ -44,10 +43,18 @@ export class AuthService {
 
   async getUserInfo() {
     try {
+      console.log("acc", this.account);
       this.session = await this.account.get();
-      return this.session;
+      return {
+        user: this.session,
+        success: true,
+      };
     } catch (err) {
       console.log("err in getUserInfo()-auth.js ", err);
+      return {
+        success: false,
+        statusCode: err.response.code,
+      };
     }
   }
 
